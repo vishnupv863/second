@@ -7,7 +7,8 @@ const mockUsers = [
     { id: 2, username: 'neena', displayName: "neena" },
     { id: 3, username: 'gokul', displayName: "gokul" },
     { id: 4, username: 'shaji', displayName: "shaji" },
-    { id: 5, username: 'sreeja', displayName: "srejja" },
+    { id: 5, username: 'sreeja', displayName: "sreeja" },
+    { id: 5, username: 'sheeba', displayName: "sheeba" }
 ]
 
 app.get("/", (req, res) => {
@@ -15,7 +16,10 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api/users", (req, res) => {
-    res.send(mockUsers);
+    const {query: {filter,value}} = req;
+    if(!filter||!value) return res.send(mockUsers);
+    const filteredUsers = mockUsers.filter((user)=>user[filter].includes(value));
+    return res.send(filteredUsers);
 });
 
 app.get("/api/products", (req, res) => {
@@ -32,7 +36,7 @@ app.get("/api/users/:id", (req, res) => {
     console.log(req.params)
     const parseId = parseInt(req.params.id);
     if (isNaN(parseId)) return res.status(400).send({ msg: "bad request" });
-    const findUser = mockUsers.find((user) => user.id === parseId );
+    const findUser = mockUsers.find((user) => user.id === parseId);
     if (!findUser) return res.status(401).send({ msg: "user not found" });
     res.status(201).send(findUser)
 });
