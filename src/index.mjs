@@ -31,6 +31,15 @@ app.post("/api/users", (req,res) => {
     res.status(200).send(mockUsers);
 });
 
+app.put("/api/users/:id", (req,res) => {
+    const {params:{id}, body} = req;
+    const parseId = parseInt(id);
+    const findIndex = mockUsers.findIndex((user) => user.id===parseId);
+    if(findIndex ===-1) return res.sendStatus(404);
+    mockUsers[findIndex] = {id:parseId, ...body}
+    return res.send(mockUsers)
+});
+
 app.get("/api/products", (req, res) => {
     res.send([
         { id: 1, name: "chichek", price: 200 },
