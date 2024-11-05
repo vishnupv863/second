@@ -1,6 +1,7 @@
 import express from 'express';
 
 const app = express();
+app.use(express.json());
 
 const mockUsers = [
     { id: 1, username: 'vishnu', displayName: "vishnu" },
@@ -20,6 +21,14 @@ app.get("/api/users", (req, res) => {
     if(!filter||!value) return res.send(mockUsers);
     const filteredUsers = mockUsers.filter((user)=>user[filter].includes(value));
     return res.send(filteredUsers);
+});
+
+app.post("/api/users", (req,res) => {
+    console.log(req.body);
+    const {body} = req;
+    const newUser = {id : mockUsers[mockUsers.length-1].id + 1, ...body};
+    mockUsers.push(newUser);
+    res.status(200).send(mockUsers);
 });
 
 app.get("/api/products", (req, res) => {
