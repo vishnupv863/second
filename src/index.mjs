@@ -33,11 +33,11 @@ app.post("/api/users", (req,res) => {
 
 app.put("/api/users/:id", (req,res) => {
     const {params:{id}, body} = req;
-    const parseId = parseInt(id);
-    const findIndex = mockUsers.findIndex((user) => user.id===parseId);
-    if(findIndex ===-1) return res.sendStatus(404);
-    mockUsers[findIndex] = {id:parseId, ...body}
-    return res.send(mockUsers)
+    const parsedId = parseInt(id);
+    const findIndex = mockUsers.findIndex((user) => user.id === parsedId);
+    if(findIndex === -1) return res.status(404).send("user not found");
+    mockUsers[findIndex] = {id:parsedId, ...body}
+    return res.status(200).send(mockUsers);
 });
 
 app.get("/api/products", (req, res) => {
